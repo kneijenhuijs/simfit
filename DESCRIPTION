@@ -1,0 +1,13 @@
+Package: simfit
+Type: Package
+Title: Generate and fit two-factor within-subject designs
+Version: 0.2
+Date: 2015-06-03
+Author: Koen I. Neijenhuijs
+Maintainer: Koen I. Neijenhuijs <k.neijenhuijs@gmail.com>
+Description: Functions to generate data for, and fit, two-factor within-subject designs; for use in simulations.
+License: GPL-2
+Imports: funfact,
+         lme4 (>= 1.1-7),
+         pbkrtest,
+         car
