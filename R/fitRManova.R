@@ -47,7 +47,7 @@ fitRManova <- function(mcr.data) {
   xd <- xd[complete.cases(xd),] #Delete missing cases as ezANOVA doesn't do this itself. Using RM, deleting missing cases is the only option besides imputation which we aren't using.
   
   library(ez, quietly=TRUE)
-  options(warn = -1) 
+  options(warn = -1, contrasts=c("contr.sum", "contr.poly"))
   RM.all <- ezANOVA(data=xd, dv = .(Resp), wid = .(SubjID), within = .(Cond,Meas), type = 3, detailed=TRUE) #Make sure I catch the model summary here
     
   f.Cond <- RM.all$ANOVA$`F`[2]

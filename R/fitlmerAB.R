@@ -27,6 +27,7 @@
 #' @param ncond Number of levels of the condition variable
 #' @param krmodcomp If TRUE calculates F-statistics with Kenward-Roger correction using \code{\link[pbkrtest]{KRmodcomp}}
 #' @param pbmodcomp If TRUE calculates parametrically bootstrapped LRT effects using \code{\link[pbkrtest]{PBmodcomp}}
+#' @param nboots Number of bootstrap simulations to be carried out by \code{\link[pbkrtest]{PBmodcomp}}
 #' @return A vector with elements:
 #' If LRT = true:
 #' \item{convmain}{Code signifying convergence of main model
@@ -139,7 +140,7 @@
 #' 
 #' @export fitlmerAB
 
-fitlmerAB <- function(mcr.data, ri.only=FALSE, wsbi=FALSE, NoCovar = FALSE, ncond=2, LRT = TRUE, krmodcomp = FALSE, pbmodcomp = FALSE) {
+fitlmerAB <- function(mcr.data, ri.only=FALSE, wsbi=FALSE, NoCovar = FALSE, ncond=2, LRT = TRUE, krmodcomp = FALSE, pbmodcomp = FALSE, nboots = 1000) {
   xd <- mcr.data
   listoflevels <- c(paste0("CondCond", 2:(ncond))) #Character list of contrast names of Condition
 
@@ -428,9 +429,9 @@ fitlmerAB <- function(mcr.data, ri.only=FALSE, wsbi=FALSE, NoCovar = FALSE, ncon
       stop('LRT needs to be set to TRUE as pbmodcomp uses its models')
     } else {}
     #Bootstrap p-values using PBmodcomp for effects .. REMEMBER TO INCREASE ITERATIONS
-    boot.Cond <- PBmodcomp(xd.lmer, xd.lmer.2, nsim=10)
-    boot.Meas <- PBmodcomp(xd.lmer, xd.lmer.3, nsim=10)
-    boot.Int <- PBmodcomp(xd.lmer, xd.lmer.4, nsim=10)
+    boot.Cond <- PBmodcomp(xd.lmer, xd.lmer.2, nsim=nboots)
+    boot.Meas <- PBmodcomp(xd.lmer, xd.lmer.3, nsim=nboots)
+    boot.Int <- PBmodcomp(xd.lmer, xd.lmer.4, nsim=nboots)
       
     PBtest.Cond <- summary(boot.Cond)$test[1,4]
     Bartlett.Cond <- summary(boot.Cond)$test[3,4]
